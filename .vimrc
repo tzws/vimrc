@@ -127,6 +127,7 @@ filetype off                  " 这是必需的
 
 		Plugin 'bsdelf/bufferhint'
 		Plugin 'sjl/gundo.vim'
+        nnoremap <leader>h :GundoToggle<CR>
 		" Plugin 'YankRing.vim'
 		" Plugin 'maxbrunsfeld/vim-yankstack'
 		Plugin 'svermeulen/vim-easyclip'
@@ -230,6 +231,18 @@ filetype off                  " 这是必需的
         Plugin 'junegunn/vim-easy-align'               " 都说这个比 Tabularize 好用。
 		" coffee-scrpit support
 		" Plugin 'kchmck/vim-coffee-script'
+
+        " 應該是目前最新、最全的PHP語法高亮插件了，它解決了舊版本無法高亮 @throws 的問題。
+        Plugin 'StanAngeloff/php.vim'
+		function! PhpSyntaxOverride()
+			hi! def link phpDocTags  phpDefine
+			hi! def link phpDocParam phpType
+		endfunction
+
+		augroup phpSyntaxOverride
+			autocmd!
+			autocmd FileType php call PhpSyntaxOverride()
+		augroup END
 	"}}}
 
 	"color scheme {{{
@@ -336,7 +349,14 @@ filetype off                  " 这是必需的
 		endif
 		syntax on
 		set nospell
+        " 去掉beep，听歌的时候很烦
+        " set noeb vb t_vb=
+        " au GUIEnter * set vb t_vb=
 
+        set noerrorbells visualbell t_vb=
+        if has('autocmd')
+            autocmd GUIEnter * set visualbell t_vb=
+        endif
 
 		" 用浅色高亮当前行
 		" set textwidth=80
@@ -360,7 +380,7 @@ filetype off                  " 这是必需的
 		" set linebreak
 
 		"将tab替换为空格
-		" nmap tt :%s/\t/    /g<CR>
+        nmap <leader>ts :%s/\t/    /<CR>
 
 		" set showmatch " 插入括号时，短暂地跳转到匹配的对应括号
 		" set matchtime=2 " 短暂跳转到匹配括号的时间
@@ -702,7 +722,7 @@ filetype off                  " 这是必需的
 	" nnoremap <Leader>4 :set tabstop=4  softtabstop=4 shiftwidth=4<CR>
 	nnoremap <Leader>eg :e ++enc=gbk<CR>
 	nnoremap <Leader>eu :e ++enc=utf8<CR>
-	nnoremap <Leader>h :nohlsearch<CR>
+	" nnoremap <Leader>h :nohlsearch<CR>
 	" Use <C-L> to clear the highlighting of :set hlsearch
 	if maparg('<C-L>', 'n') ==# ''
 		nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
@@ -915,7 +935,7 @@ filetype off                  " 这是必需的
 	" => General Abbrevs
 	"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 	"My information
-	iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
+	iab xdate <c-r>=strftime("%Y-%m-%d %H:%M:%S")<cr>
 	iab xname Zhang Chunfei
 	nnoremap <leader>tm :echo strftime('%c')<cr>
 
@@ -1668,7 +1688,9 @@ filetype off                  " 这是必需的
     "       \ endif
     " https://github.com/spf13/spf13-vim/blob/3.0/.vimrc
     " Tabularize {
-        if isdirectory(expand("~/vimfiles/bundle/tabular"))
+    "
+	if (has('win32') && isdirectory(expand("$HOME/vimfiles/bundle/tabular"))) || (has('linux') && isdirectory(expand("$HOME/.vim/bundle/tabular")))
+        " if isdirectory(expand("~/vimfiles/bundle/tabular"))
             nmap <Leader>a& :Tabularize /&<CR>
             vmap <Leader>a& :Tabularize /&<CR>
             nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>

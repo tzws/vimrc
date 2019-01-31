@@ -4,7 +4,7 @@ filetype off                  " 这是必需的
 
 " vundle {{{
 	if has('win32')
-		set rtp+=$HOME/vimfiles/bundle/vundle/
+		set rtp+=$HOME/vimfiles/bundle/vundle.vim/
 		call vundle#begin('$HOME/vimfiles/bundle/')
 	else
 		" 你在此设置运行时路径
@@ -54,9 +54,13 @@ filetype off                  " 这是必需的
 			Plugin 'michalliu/sourcebeautify.vim'
 
             " Bundle 'jslint.vim'
-            Bundle 'wookiehangover/jshint.vim'
+            " Bundle 'wookiehangover/jshint.vim'
 			" Use Node.js for JavaScript interpretation
-			" let $JS_CMD='node'
+            let $JS_CMD='node'
+            " ==> 这个变量是 jslint.vim 这个项目的。 但报的错，明显是在jsruntime.vim里面。
+            " https://github.com/hallettj/jslint.vim/issues/13
+            " 就是 jsruntime.vim 里的问题，按照
+            " https://github.com/hallettj/jslint.vim/blob/master/ftplugin/javascript/jslint.vim 里面的代码改就行
 			" Bundle 'jsbeautify' "这个似乎不维护了。
 			"这家伙就那个http://jsbeautifier.org的避免版。需要nodejs或者V8，同时依赖于 https://github.com/beautify-web/js-beautify"
 			Plugin 'maksimr/vim-jsbeautify'
@@ -113,6 +117,9 @@ filetype off                  " 这是必需的
 		"strip all trailing whitespace in the current file
 		nnoremap <leader>w :%s/\s\+$//<cr>:let @/=''<CR>
 
+		" Plugin 'vim-scripts/matchit.zip'
+                " match-up is a drop-in replacement for the vim plugin matchit.vim
+                Plugin 'andymass/vim-matchup'
 		Plugin 'vim-scripts/matchit.zip'
 		Plugin 'jiangmiao/auto-pairs'
 		Plugin 'Valloric/MatchTagAlways' "让vim像Notepad++一样智能高亮匹配HTML标签
@@ -127,10 +134,9 @@ filetype off                  " 这是必需的
 
 		Plugin 'bsdelf/bufferhint'
 		Plugin 'sjl/gundo.vim'
-        nnoremap <leader>h :GundoToggle<CR>
-		" Plugin 'YankRing.vim'
+                Plugin 'YankRing.vim'
 		" Plugin 'maxbrunsfeld/vim-yankstack'
-		Plugin 'svermeulen/vim-easyclip'
+		" Plugin 'svermeulen/vim-easyclip'
 
 
 		Plugin 'Konfekt/FastFold'
